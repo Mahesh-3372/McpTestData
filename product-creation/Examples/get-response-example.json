@@ -1,0 +1,24 @@
+[
+  {
+    "productId": "PROD001",
+    "productName": "Wireless Mouse",
+    "category": "Electronics",
+    "price": 799.99,
+    "stock": 150,
+    "manufacturer": {
+      "name": "TechGear",
+      "country": "India"
+    }
+  },
+  {
+    "productId": "PROD002",
+    "productName": "Bluetooth Keyboard",
+    "category": "Electronics",
+    "price": 1299.99,
+    "stock": 80,
+    "manufacturer": {
+      "name": "KeyMasters",
+      "country": "India"
+    }
+  }
+]

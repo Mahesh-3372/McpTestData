@@ -1,0 +1,11 @@
+{
+  "productId": "PROD001",
+  "productName": "Wireless Mouse",
+  "category": "Electronics",
+  "price": 799.99,
+  "stock": 150,
+  "manufacturer": {
+    "name": "TechGear",
+    "country": "India"
+  }
+}

@@ -1,0 +1,61 @@
+#%RAML 1.0
+title: productInformation
+version: v1
+
+types:
+  common-data: !include Data-Types/common-dataType.raml
+
+
+
+/createProduct:
+  description: This endpoint creates a new product
+  post:
+    body:
+      application/json:
+        type: common-data
+        example: !include Examples/post-request-example.json
+    responses:
+      201:
+        body:
+          application/json:
+            example: {
+              "status": "product created successfully",
+              "productId": "PROD001"
+            }
+ 
+/getProducts:
+  description: This endpoint retrieves all product data
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            items:
+              type: common-data
+            example: !include Examples/get-response-example.json
+                  
+          
+/products/{productId}:
+  uriParameters:
+    productId: string
+  get:
+    description: This endpoint retrieves specific product data
+    responses:
+      200:
+        body:
+          application/json:
+            type: common-data
+            example: !include Examples/post-request-example.json
+  put:
+    description: This endpoint updates product information
+    body:
+      application/json:
+        type: common-data
+        example: !include Examples/post-request-example.json
+    responses:
+      200:
+        body:
+          application/json:
+            example: {
+              "status": "product details updated successfully"
+            }
