@@ -1,0 +1,411 @@
+{
+
+  "api": {
+
+    "title": "Order Information API",
+
+    "version": "v1",
+
+    "baseUri": "https://api.example.com/{version}",
+
+    "mediaType": "application/json",
+
+    "types": {
+
+      "Order": {
+
+        "type": "object",
+
+        "properties": {
+
+          "orderId": "string",
+
+          "productId": "string",
+
+          "quantity": "integer",
+
+          "status": {
+
+            "type": "string",
+
+            "enum": ["pending", "shipped", "delivered", "cancelled"]
+
+          }
+
+        }
+
+      }
+
+    },
+
+    "traits": {
+
+      "headers": {
+
+        "headers": {
+
+          "Authorization": {
+
+            "description": "Bearer token for authorization",
+
+            "type": "string",
+
+            "required": true,
+
+            "example": "Bearer abcdef12345"
+
+          }
+
+        }
+
+      }
+
+    },
+
+    "securitySchemes": {
+
+      "customAuth": {
+
+        "type": "x-custom",
+
+        "describedBy": {
+
+          "headers": {
+
+            "Authorization": {
+
+              "type": "string",
+
+              "required": true,
+
+              "example": "Bearer abcdef12345"
+
+            }
+
+          }
+
+        }
+
+      }
+
+    },
+
+    "endpoints": {
+
+      "/orders": {
+
+        "displayName": "Orders",
+
+        "description": "Endpoint to manage customer orders",
+
+        "methods": {
+
+          "get": {
+
+            "displayName": "Retrieve Orders",
+
+            "is": ["headers"],
+
+            "securedBy": ["customAuth"],
+
+            "queryParameters": {
+
+              "status": {
+
+                "description": "Filter by order status",
+
+                "type": "string",
+
+                "required": false,
+
+                "enum": ["pending", "shipped", "delivered", "cancelled"],
+
+                "example": "shipped"
+
+              },
+
+              "limit": {
+
+                "description": "Limit the number of orders returned",
+
+                "type": "integer",
+
+                "required": false,
+
+                "default": 10,
+
+                "example": 10
+
+              }
+
+            },
+
+            "headers": {
+
+              "X-Correlation-ID": {
+
+                "description": "Correlation ID for tracing",
+
+                "type": "string",
+
+                "required": false,
+
+                "example": "abc-xyz-123"
+
+              }
+
+            },
+
+            "responses": {
+
+              "200": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "type": "Order[]",
+
+                    "example": [
+
+                      {
+
+                        "orderId": "ORD12345",
+
+                        "productId": "PROD001",
+
+                        "quantity": 3,
+
+                        "status": "shipped"
+
+                      },
+
+                      {
+
+                        "orderId": "ORD12346",
+
+                        "productId": "PROD002",
+
+                        "quantity": 1,
+
+                        "status": "pending"
+
+                      }
+
+                    ]
+
+                  }
+
+                }
+
+              },
+
+              "400": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "examples": {
+
+                      "invalidLimit": {
+
+                        "error": "Invalid value for 'limit'. Expected integer, got string."
+
+                      }
+
+                    }
+
+                  }
+
+                }
+
+              },
+
+              "401": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "example": {
+
+                      "error": "Authorization header missing or invalid"
+
+                    }
+
+                  }
+
+                }
+
+              }
+
+            }
+
+          },
+
+          "post": {
+
+            "displayName": "Create Order",
+
+            "is": ["headers"],
+
+            "securedBy": ["customAuth"],
+
+            "headers": {
+
+              "X-Client-ID": {
+
+                "description": "Unique client identifier",
+
+                "type": "string",
+
+                "required": true,
+
+                "example": "client-123"
+
+              },
+
+              "X-Request-ID": {
+
+                "description": "Request ID for idempotency",
+
+                "type": "string",
+
+                "required": false,
+
+                "example": "req-456"
+
+              }
+
+            },
+
+            "body": {
+
+              "application/json": {
+
+                "type": "Order",
+
+                "example": {
+
+                  "orderId": "ORD12347",
+
+                  "productId": "PROD003",
+
+                  "quantity": 2,
+
+                  "status": "pending"
+
+                }
+
+              }
+
+            },
+
+            "responses": {
+
+              "201": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "type": "Order",
+
+                    "example": {
+
+                      "orderId": "ORD12347",
+
+                      "productId": "PROD003",
+
+                      "quantity": 2,
+
+                      "status": "pending"
+
+                    }
+
+                  }
+
+                }
+
+              },
+
+              "400": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "examples": {
+
+                      "missingField": {
+
+                        "error": "Missing required field: productId"
+
+                      },
+
+                      "wrongType": {
+
+                        "error": "Invalid type: quantity must be an integer"
+
+                      }
+
+                    }
+
+                  }
+
+                }
+
+              },
+
+              "401": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "example": {
+
+                      "error": "Authorization header missing or invalid"
+
+                    }
+
+                  }
+
+                }
+
+              },
+
+              "403": {
+
+                "body": {
+
+                  "application/json": {
+
+                    "example": {
+
+                      "error": "Client does not have permission to create orders"
+
+                    }
+
+                  }
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+ 
