@@ -1,0 +1,10 @@
+{
+  "main": "order-information.raml",
+  "name": "order-information",
+  "groupId": "698080ba-3b96-402f-8518-3f39c83d6c7b",
+  "assetId": "order-information",
+  "version": "1.0.0",
+  "classifier": "raml",
+  "tags": [],
+  "descriptorVersion": "1.0.0"
+}
